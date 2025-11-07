@@ -726,6 +726,104 @@ int findLeastCostRoute(
 }
 
 
+      // Calculate Delivery Cost
+void calculateDeliveryCost(
+    int distance[MAX_CITIES][MAX_CITIES],
+    char vehicleType[MAX_VEHITYPES][10],
+    int cityCount,
+    int selectVehicleType,
+    int source,
+    int destination,
+    int weight,
+    int capacity[],
+    int ratePerKm[],
+    int avgSpeed[],
+    int fuelEfficiency[],
+    int* deliveryCount,
+    int deliveryDistances[],
+    float deliveryTimes[],
+    float deliveryRevenues[],
+    float deliveryProfits[],
+    int cityList[MAX_CITIES],
+    int* routeSize,
+    int minDistanceTable[MAX_DELIVERIES][3],
+    int bestPair[2],
+    int* minDist,
+    int* bestOrder,
+    float* deliveryCost,
+    float* timeHrs,
+    int* fuelUsed,
+    float* fuelCost,
+    float* totalCost,
+    float* profit,
+    float* customerCharge
+    ) {
+
+    int index = selectVehicleType - 1;
+
+    if (index < 0 || index >= MAX_VEHITYPES) {
+        printf("\tInvalid vehicle type!\n");
+        return;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////// check if delivery count zero
+
+
+    // int D = distance[source][destination]; // previous
+
+    int leastDist = findLeastCostRoute(distance, cityList, cityCount, routeSize, source, destination, minDist, bestPair, *deliveryCount, minDistanceTable, bestOrder);
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////  fix it later
+    /* -------------------------------------------------
+    if (leastDist <= 0) {
+        printf("\tInvalid or missing distance between these cities!-->Can't Calculate cost!\n");
+        return;
+    }
+   ------------------------------------------------------- */
+
+    int D = leastDist;
+    int W = weight;
+    int R = ratePerKm[index];
+    int E = fuelEfficiency[index];
+    int S = avgSpeed[index];
+
+            // calculations
+
+        // Delivery Cost:
+    *deliveryCost = D * R * (1 + (W / 10000.0));
+
+        // Estimated Delivery Time
+    *timeHrs = (float)D / S;
+
+        // Fuel Used
+    *fuelUsed = D / E;
+
+        // Fuel Cost
+    *fuelCost = *fuelUsed * FUEL_PRICE;
+
+        // Total Cost
+    *totalCost = *deliveryCost + *fuelCost;
+
+        // profit
+    *profit = *deliveryCost * 0.25;
+
+        // Customer Carge
+    *customerCharge = *totalCost + *profit;
+
+        // --- Store results ---                    )
+    int rsltStoreIdx = *deliveryCount - 1;
+    if (rsltStoreIdx >= 0 && rsltStoreIdx < MAX_DELIVERIES) {
+        deliveryDistances[rsltStoreIdx] = D;
+        deliveryTimes[rsltStoreIdx] = *timeHrs;
+        deliveryRevenues[rsltStoreIdx] = *customerCharge;
+        deliveryProfits[rsltStoreIdx] = *profit;
+    } else {
+        printf("\n \tWarning: cannot store delivery results (invalid index %d)\n \tCheck DeliveryCount %d\n", rsltStoreIdx, *deliveryCount);
+    }
+
+}
+
+
 
 
 
