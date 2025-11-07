@@ -1041,12 +1041,98 @@ void displayDeliverySummary(int deliveryCount, int deliveryDistances[], float de
     printf("\t\t=================================================\n");
 }
 
+  // Display Renaining All Delivery Status
+      // Function to display all deliveries
+void displayAllDeliveries(int sourceArr[], int destinationArr[], int weightArr[], int vehicleArr[], char vehicleType[][10], int deliveryCount, char deliveryStatus[MAX_DELIVERIES][10]) {
+
+    if (deliveryCount == 0) {
+        printf("\n\tNo deliveries recorded yet.\n");
+        return;
+    }
+
+
+    printf("\n\t%-5s %-10s %-12s %-8s %-10s %-12s\n", "No", "Source", "Destination", "Weight", "Vehicle", "Status");
+    printf("\t--------------------------------------------------------------------------\n");
+
+
+    for (int i = 0; i < deliveryCount; i++) {
+        printf("\t%-5d %-10d %-12d %-8d %-10s %-12s\n",
+               i + 1,
+               sourceArr[i],
+               destinationArr[i],
+               weightArr[i],
+               vehicleType[vehicleArr[i]],
+               deliveryStatus[i]);
+    }
+}
+      // Display All Least Distances
+void displayAllStoredLeastDistances(int minDistanceTable[MAX_DELIVERIES][3], int deliveryCount, char cities[MAX_CITIES][NAME_LEN]) {
+
+    printf("\n\t\t===== Stored Minimum Distances =====\n");
+
+    if (deliveryCount == 0) {
+        printf("\tNo stored routes found!\n");
+        return;
+    }
+
+    printf("\t%-5s %-20s %-20s %-10s\n", "No.", "Source City", "Destination City", "Min Dist (km)");
+    printf("\t---------------------------------------------------------------\n");
+
+    for (int i = 0; i < deliveryCount; i++) {
+        int src = minDistanceTable[i][0];
+        int dst = minDistanceTable[i][1];
+        int dist = minDistanceTable[i][2];
+
+        printf("\t%-5d %-20s (%2d) %-20s (%2d) %-10d\n",
+               i + 1,
+               cities[src], src + 1,
+               cities[dst], dst + 1,
+               dist);
+    }
+
+    printf("\t---------------------------------------------------------------\n");
+}
+
+      // // Renaining All Delivery Status Using above 2
+void remainAllDeliveryStatus(int sourceArr[], int destinationArr[], int weightArr[], int vehicleArr[], char vehicleType[][10],
+    char deliveryStatus[MAX_DELIVERIES][10], int deliveryCount, int minDistanceTable[MAX_DELIVERIES][3], char cities[MAX_CITIES][NAME_LEN]) {
+
+    printf("\n\t\t===== REMAINING DELIVERY STATUS =====\n");
+
+    if (deliveryCount == 0) {
+        printf("\tNo deliveries available to display.\n");
+        return;
+    }
+
+
+    printf("\n\t--- Delivery Records ---\n");
+    displayAllDeliveries(
+        sourceArr,
+        destinationArr,
+        weightArr,
+        vehicleArr,
+        vehicleType,
+        deliveryCount,
+        deliveryStatus
+    );
+
+
+    printf("\n\t--- Stored Minimum Distances ---\n");
+    displayAllStoredLeastDistances(
+        minDistanceTable,
+        deliveryCount,
+        cities
+    );
+
+    printf("\n\t===== End of Delivery Summary =====\n");
+}
 
 
 
 
 
 
+//
 
 
 
