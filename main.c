@@ -134,7 +134,53 @@ char deliveryStatus[MAX_DELIVERIES][10], int deliveryCount, int minDistanceTable
 int main()
 {
     char cities[MAX_CITIES][NAME_LEN];
-    int count = 0;
+    int cityCount = 0;
+
+    int distance[MAX_CITIES][MAX_CITIES] = {0};
+
+        // Vehicle Management Details
+    char vehicleType[MAX_VEHITYPES][10] = {"Van", "Truck", "Lorry"};
+    int capacity[] = {1000, 5000, 10000};
+    int ratePerKm[] = {30, 40, 80};
+    int avgSpeed[] = {60, 50, 45};
+    int fuelEfficiency[] = {12, 6, 4};
+
+    // int vechicleDetails[3][4] = {{1000, 30, 60, 12}, {5000, 40, 50, 6}, {10000, 80, 45, 4}};
+
+        //  Delivery Request Handling
+    int source, destination, selectVehicleType, weight;
+    char selectVehicleTypeStr[10];
+
+        // Calculations
+    float deliveryCost;
+    float timeHrs;
+    int fuelUsed;
+    float fuelCost;
+    float totalCost;
+    float profit;
+    float customerCharge;
+
+        // Delivery record arrays
+    int deliveryCount = 0;
+    int sourceArr[MAX_DELIVERIES];
+    int destinationArr[MAX_DELIVERIES];
+    int weightArr[MAX_DELIVERIES];
+    int vehicleArr[MAX_DELIVERIES];
+
+    int deliveryDistances[MAX_DELIVERIES];
+    float deliveryTimes[MAX_DELIVERIES];
+    float deliveryRevenues[MAX_DELIVERIES];
+    float deliveryProfits[MAX_DELIVERIES];
+    char deliveryStatus[MAX_DELIVERIES][10];
+    float actualDeliveryTimes[MAX_DELIVERIES];
+
+        // Find Least Cost Route
+    int minDist = INT_MAX;
+    int bestPair[2] = {-1, -1};
+    int bestOrder = 0;
+    int minDistanceTable[MAX_DELIVERIES][3];
+    int cityList[MAX_CITIES];
+    int routeSize = 0;
 
     int choice;
 
@@ -144,10 +190,10 @@ int main()
         printf("1. City Management\n");
         printf("2. Distance Management\n");
         printf("3. Delivery Request Handling\n");
-        printf("4. Option 4 \n");
-        printf("5. Option 5 \n");
-        printf("6. Option 6 \n");
-        printf("7. Option 7 \n");
+        printf("4. Delivery Cost Estimation\n");
+        printf("5. Display Distance Table\n");
+        printf("6. Display Summary of All Diivaries (Performance)\n");
+        printf("7. Display Status of all remain Delivaries\n");
         printf("8. Exit Program\n\n");
 
         printf("Enter your choice: ");
@@ -155,9 +201,8 @@ int main()
 
         switch (choice) {
             case 1:
-                int choice;
+                int cityMenuChoice;
                 do {
-
                     printf("\n\t|``  \t=== City Management ===\t  ``|\n\n");
                     printf("\t| 1. Add new City                   |\n");
                     printf("\t| 2. Rename City                    |\n");
@@ -168,39 +213,97 @@ int main()
                     printf("\t``````````````````\\ /````````````````\n");
 
                     printf("\tEnter your choice: ");
-                    scanf("%d", &choice);
+                    scanf("%d", &cityMenuChoice);
 
-                    switch (choice) {
+                    switch (cityMenuChoice) {
 
                         case 1:
-                            addCity(cities, &count);
+                            addCity(cities, &cityCount);
                             break;
                         case 2:
-                            //
+                            renameCity(cities, cityCount);
                             break;
                         case 3:
-                            //
+                            removeCity(cities, &cityCount);
                             break;
                         case 4:
-                            //
+                            printf("\t\t|==> Display Cities\n");
+                            displayCities(cities, cityCount);
                             break;
                         case 5:
-                            //
+                            printf("\t\t|==> Exiting to main menu.\n");
                             break;
                         default:
-                            //
+                            printf("Invalid choice! Please try again.\n");
 
                     }
 
-                 } while (choice != 5);
+                 } while (cityMenuChoice != 5);
                  break;
 
             case 2:
-                //
+                printf("\n\t|``  \t=== Distance Management ===\t  ``|\n");
+                inputDistance(distance, cities, cityCount);
                 break;
 
             case 3:
-                //
+                printf("\n\t|``  \t=== Delivery Request ===\t  ``|\n");
+            //  handleDeliveryRequest(cityCount, vehicleType, cities, &selectVehicleType, selectVehicleTypeStr, &source, &destination, &weight, &deliveryCount, sourceArr, destinationArr, weightArr, vehicleArr);
+            //  handleDeliveryRequest(cityCount, vehicleType, capacity, cities, &selectVehicleType, selectVehicleTypeStr, &source, &destination, &weight, &deliveryCount, sourceArr, destinationArr, weightArr, vehicleArr);
+                handleDeliveryRequest(
+                    cityCount,
+                    vehicleType,
+                    capacity,
+                    cities,
+                    &selectVehicleType,
+                    selectVehicleTypeStr,
+                    &source,
+                    &destination,
+                    &weight,
+                    &deliveryCount,
+                    sourceArr,
+                    destinationArr,
+                    weightArr,
+                    vehicleArr,
+                    deliveryStatus,
+                    actualDeliveryTimes
+                );
+
+                if (deliveryCount > 0) {
+                    calculateDeliveryCost(
+                        distance,
+                        vehicleType,
+                        cityCount,
+                        selectVehicleType,
+                        source,
+                        destination,
+                        weight,
+                        capacity,
+                        ratePerKm,
+                        avgSpeed,
+                        fuelEfficiency,
+                        &deliveryCount,
+                        deliveryDistances,
+                        deliveryTimes,
+                        deliveryRevenues,
+                        deliveryProfits,
+                        cityList,
+                        &routeSize,
+                        minDistanceTable,
+                        bestPair,
+                        &minDist,
+                        &bestOrder,
+                        &deliveryCost,
+                        &timeHrs,
+                        &fuelUsed,
+                        &fuelCost,
+                        &totalCost,
+                        &profit,
+                        &customerCharge
+                    );
+                }
+
+                break;
 
             case 4:
                 printf("\n\t|``  \t=== DELIVERY COST ESTIMATION ===\t  ``|\n");
@@ -219,27 +322,36 @@ int main()
                     continue;
                 }
                 break;
-                break;
-
+                                      ////////////////////////////////////////////////////////// above for user
             case 5:
-                //code
+                printf("\n\t|``  \t=== Distance Table ===\t  ``|");
+                displayDistances(distance, cities, cityCount);
                 break;
-
+                                      ////////////////////////////////////////////////////////// below for admin
             case 6:
-                //code
+                printf("\n\t|``  \t=== PERFORMANCE REPORT ===\t  ``|\n");
+                displayDeliverySummary(deliveryCount, deliveryDistances, deliveryTimes,
+                       actualDeliveryTimes, deliveryRevenues, deliveryProfits,
+                       minDistanceTable, cities);
+
                 break;
 
             case 7:
-                //code
+                // not in question                                      ///////////////////////////////////////////////// fix later
+                // Display details about all remain dilivaries and show all minimum distances between 2 cities
+                printf("\n\t|``  \t=== All Delivery Status Details===\t  ``|\n");
+                remainAllDeliveryStatus(sourceArr, destinationArr, weightArr, vehicleArr, vehicleType, deliveryStatus, deliveryCount, minDistanceTable, cities);
                 break;
 
             case 8:
-                printf("Exiting the program.\n");
+                printf("\n\t|``  \t=== Exiting Logistics Management System ===\t  ``|\n");
+                printf("\t  Tank for connecting with us!\n");
+                printf("\t  Press Any key to Exit!\n");
                 break;
 
             default:
-                printf("Invalid choice! Please try again.\n");
-
+                printf("\n\t|``  \t=== Invalid Choice Entered! ===\t  ``|\n");
+                printf("\t  Please try again. Enter Valid Choice*\n");
         }
 
     } while (choice != 8);
