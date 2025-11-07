@@ -458,6 +458,60 @@ int getWeight(int *selectVehicleType, char vehicleType[MAX_VEHITYPES][10], int c
     return -1;
 }
 
+int getLocations(int *source, int *destination, char cities[MAX_CITIES][NAME_LEN], int cityCount) {
+    char retryCities = 'n';
+
+    if (cityCount < 2) {
+        printf("\tAt least two cities are required to select source and destination.\n");
+        return 0;
+    }
+
+    do {
+
+        printf("\n\t\t|==> Display Cities\n");
+        displayCities(cities, cityCount);
+
+        printf("\n\tEnter source city index (1-%d): ", cityCount);
+        scanf("%d", source);
+        printf("\tEnter destination city index (1-%d): ", cityCount);
+        scanf("%d", destination);
+
+        // Validation 1: same city
+        if (*source == *destination) {
+            printf("\t\tSource and destination cannot be the same!\n");
+            printf("\tDo you want to try another two cities? (y/n): ");
+            scanf(" %c", &retryCities);
+            if (retryCities == 'y' || retryCities == 'Y')
+                continue;
+            else {
+                //printf("\tReturned to main menu--->\n");
+                return 0; // user give up
+            }
+        }
+
+        // Validation 2: out of range
+        if (*source < 1 || *source > cityCount || *destination < 1 || *destination > cityCount) {
+            printf("\t\tInvalid city numbers!\n");
+            printf("\tDo you want to try another two cities? (y/n): ");
+            scanf(" %c", &retryCities);
+            if (retryCities == 'y' || retryCities == 'Y')
+                continue;
+            else {
+                //printf("\tReturned to main menu--->\n");
+                return 0; // user give up
+            }
+        }
+
+    } while (retryCities == 'y' || retryCities == 'Y');
+
+    // reset
+    *source -= 1;
+    *destination -= 1;
+
+    return 1; // success
+}
+
+
 
 
 
