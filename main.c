@@ -884,6 +884,25 @@ void displayDeliveryEstimation(
     printf("\t======================================================\n");
 }
 
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// need to update
+    // Display minimum Distant
+void displayLeastCostRoute(int source, int destination, int routeSize, int minDist, int bestPair[2], int bestOrder){
+
+    printf("\n\t\t===== Least-Cost Route =====\n");
+    printf("\tMinimum Distance: %d\n", minDist);
+
+    if (routeSize == 0)
+        printf("\tBest Route: %d => %d\n", source + 1, destination + 1);
+    else if (routeSize == 1)
+        printf("\tBest Route: %d => %d => %d\n", source + 1, bestPair[0] + 1, destination + 1);
+    else if (routeSize >= 2) {
+        if (bestOrder == 1)
+            printf("\tBest Route: %d => %d => %d => %d\n", source + 1, bestPair[0] + 1, bestPair[1] + 1, destination + 1);
+        else
+            printf("\tBest Route: %d => %d => %d => %d\n", source + 1, bestPair[1] + 1, bestPair[0] + 1, destination + 1);
+    }
+}
+
 
 
 
