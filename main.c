@@ -822,6 +822,30 @@ void calculateDeliveryCost(
     }
 
 }
+    /*
+        // Display Results------>
+
+    printf("\n\t\t--- Delivery Delivery Summary ---\n");
+    printf("\t\t=========================\n");
+    printf("Vehicle Type: %s\n", vehicleType[index]);
+    printf("Distance (km): %d\n", D);
+    printf("Weight (kg): %d\n", W);
+    printf("Rate per km: %d LKR\n", ratePerKm[index]);
+    printf("Speed: %d km/h\n", S);
+    printf("Efficiency: %d km/l\n", E);
+    printf("Fuel Price: %.2f LKR/liter\n", FUEL_PRICE);
+    printf("-------------------------------------------\n");
+    printf("Delivery Cost: %.2f LKR\n", deliveryCost);
+    printf("Fuel Used: %d liters\n", fuelUsed);
+    printf("Fuel Cost: %.2f LKR\n", fuelCost);
+    printf("Total Operational Cost: %.2f LKR\n", totalCost);
+    printf("Profit (25/%): %.2f LKR\n", profit);
+    printf("Final Customer Charge: %.2f LKR\n", customerCharge);
+    printf("Estimated Delivery Time: %.2f hours\n", timeHrs);
+    */
+
+
+
 
 
 
