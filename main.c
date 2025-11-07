@@ -1215,69 +1215,6 @@ void displayDeliverySummary(int deliveryCount, int deliveryDistances[], float de
 }
 
 
-
-
-
-
-    // Performance Report
-void displayDeliverySummary(int deliveryCount, int deliveryDistances[], float deliveryTimes[], float actualDeliveryTimes[], float deliveryRevenues[], float deliveryProfits[], int minDistanceTable[MAX_DELIVERIES][3], char cities[MAX_CITIES][NAME_LEN]) {
-
-    if (deliveryCount == 0) {
-        printf("\n\tNo deliveries have been completed yet.\n");
-        return;
-    }
-
-    int totalDistance = 0;
-    float estTotalTime = 0.0, actualTotalTime = 0.0;
-    float totalRevenue = 0.0, totalProfit = 0.0;
-    int longest = 0, shortest = INT_MAX;
-    int longSrc = -1, longDst = -1, shortSrc = -1, shortDst = -1;
-
-    for (int i = 0; i < deliveryCount; i++) {
-        totalDistance += deliveryDistances[i];
-        estTotalTime += deliveryTimes[i];
-        actualTotalTime += actualDeliveryTimes[i];
-        totalRevenue += deliveryRevenues[i];
-        totalProfit += deliveryProfits[i];
-
-        int src = minDistanceTable[i][0];
-        int dst = minDistanceTable[i][1];
-        int dist = minDistanceTable[i][2];
-
-        if (dist > longest) {
-            longest = dist;
-            longSrc = src;
-            longDst = dst;
-        }
-        if (dist < shortest) {
-            shortest = dist;
-            shortSrc = src;
-            shortDst = dst;
-        }
-    }
-
-    float avgEstTime = estTotalTime / deliveryCount;
-    float avgActualTime = actualTotalTime / deliveryCount;
-
-
-    printf("\n\t\t===== Overall Delivery Performance Summary =====\n");
-
-    printf("\tTotal Deliveries Completed  : %d\n", deliveryCount);
-    printf("\tTotal Distance Covered      : %d km\n", totalDistance);
-    printf("\tAverage Estimated Time      : %.2f hours\n", avgEstTime);
-    printf("\tAverage Actual Time         : %.2f hours\n", avgActualTime);
-    printf("\tTotal Revenue               : Rs. %.2f\n", totalRevenue);
-    printf("\tTotal Profit                : Rs. %.2f\n", totalProfit);
-
-    if (longSrc != -1 && longDst != -1)
-        printf("\tLongest Route               : %s => %s  (%d km)\n", cities[longSrc], cities[longDst], longest);
-
-    if (shortSrc != -1 && shortDst != -1)
-        printf("\tShortest Route              : %s => %s  (%d km)\n", cities[shortSrc], cities[shortDst], shortest);
-
-    printf("\t\t=================================================\n");
-}
-
   // Display Renaining All Delivery Status
       // Function to display all deliveries
 void displayAllDeliveries(int sourceArr[], int destinationArr[], int weightArr[], int vehicleArr[], char vehicleType[][10], int deliveryCount, char deliveryStatus[MAX_DELIVERIES][10]) {
