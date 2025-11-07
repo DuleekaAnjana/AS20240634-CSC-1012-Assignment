@@ -406,6 +406,58 @@ int getVehicleType(char vehicleType[MAX_VEHITYPES][10], int capacity[], int* sel
     return -1;
 }
 
+int getWeight(int *selectVehicleType, char vehicleType[MAX_VEHITYPES][10], int capacity[], char selectVehicleTypeStr[10], int* weight){
+
+    char retryWeight;
+
+    do {
+        printf("\tEnter parcel weight (in kg --> round nearest kg): ");
+        scanf("%d", weight);
+
+        if (*weight <= 0) {
+            printf("\tWeight must be greater than 0!\n");
+            printf("\tDo you want to re-enter weight? (y/n): ");
+            scanf(" %c", &retryWeight);
+            continue;
+        }
+        else if (*weight > capacity[*selectVehicleType - 1]) {
+            printf("\t\tWeight exceeds the capacity for this vehicle type (%s -->max %d kg).\n",
+                   selectVehicleTypeStr, capacity[*selectVehicleType - 1]);
+
+            printf("\tDo you want to change (1) Vehicle or (2) Weight? Enter 1 or 2: ");
+            int option;
+            scanf("%d", &option);
+
+            if (option == 1) {
+                // Change vehicle type
+                int newType = getVehicleType(vehicleType, capacity, selectVehicleType, selectVehicleTypeStr);
+                if (newType == -1) {
+                    //printf("\tReturned to main menu--->\n");
+                    return -1;
+                }
+                *selectVehicleType = newType;
+                retryWeight = 'y';
+                continue; // check weight again for new vehicle
+            }
+            else if (option == 2) {
+                retryWeight = 'y';
+                continue; // re-enter weight
+            }
+            else {
+                //printf("\tInvalid choice! Returning to main menu.\n");
+                return -1;
+            }
+        }
+        else {
+            // Valied Weight
+            return *weight;
+        }
+
+    } while (retryWeight == 'y' || retryWeight == 'Y');
+
+    return -1;
+}
+
 
 
 
