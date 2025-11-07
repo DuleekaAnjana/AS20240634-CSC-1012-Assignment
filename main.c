@@ -624,5 +624,115 @@ void handleDeliveryRequest(
 
 
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+   // Cost Calculations
+     // Least Distance
+         // Calculate distance for route: source -> city 1 -> city 2 -> destination
+int calculatePairDistance(int distance[MAX_CITIES][MAX_CITIES], int source, int city1, int city2, int destination) {
+    return distance[source][city1] + distance[city1][city2] + distance[city2][destination];
+}
+
+        // Calculate distance for one-stop route: source -> city -> destination
+int calculateSingleDistance(int distance[MAX_CITIES][MAX_CITIES], int source, int city, int destination) {
+    return distance[source][city] + distance[city][destination];
+}
+
+       //function to find least-cost (least-distance) route
+int findLeastCostRoute(
+    int distance[MAX_CITIES][MAX_CITIES],
+    int cityList[],
+    int cityCount,
+    int* routeSize,
+    int source,
+    int destination,
+    int* minDist,
+    int bestPair[2],
+    int deliveryCount,
+    int minDistanceTable[MAX_DELIVERIES][3],
+    int* bestOrder
+    ){
+
+    for (int i = 0; i < deliveryCount; i++) {
+        int storedSrc = minDistanceTable[i][0];
+        int storedDst = minDistanceTable[i][1];
+        int storedDist = minDistanceTable[i][2];
+
+        if ((storedSrc == source && storedDst == destination) || (storedSrc == destination && storedDst == source)) {
+            *minDist = storedDist;
+            return *minDist;   //
+        }
+    }
+
+   /* int bestCity = -1;
+      bestOrder      // if (remain only 2 cities) ---------> 0 = direct
+                       // if (remain only 3 cities) ---------> 0 = direct / 1 = source -> Only 1 intermediate city -> destrination
+                       // if (remain more than 3 cities) ----> 0 = direct / 1 = source -> city1 -> city2 ->  destrination / 2 = source -> city2 -> city1 ->  destrination   */
+
+
+    *routeSize = 0;
+    for (int i = 0; i < cityCount; i++) {
+        if (i != source && i != destination) {
+            cityList[(*routeSize)++] = i;
+        }
+    }
+
+    int directDist = distance[source][destination];
+    *minDist = directDist;
+    //bestOrder = 0;
+
+
+    if (*routeSize == 1) {
+        int city = cityList[0];
+        int oneDist = calculateSingleDistance(distance, source, city, destination);
+
+        if (oneDist < *minDist) {
+            *minDist = oneDist;
+            bestPair[0] = city;
+            //bestOrder = 1;
+        }
+    }else if (*routeSize >= 2) {
+        for (int i = 0; i < *routeSize; i++) {
+            for (int j = i + 1; j < *routeSize; j++) {
+                int city1 = cityList[i];
+                int city2 = cityList[j];
+
+                int d1 = calculatePairDistance(distance, source, city1, city2, destination);
+                int d2 = calculatePairDistance(distance, source, city2, city1, destination);
+
+                if (d1 < *minDist) {
+                    *minDist = d1;
+                    bestPair[0] = city1;
+                    bestPair[1] = city2;
+                    *bestOrder = 1;
+                }
+                if (d2 < *minDist) {
+                    *minDist = d2;
+                    bestPair[0] = city2;
+                    bestPair[1] = city1;
+                    *bestOrder = 2;
+                }
+            }
+        }
+    }
+
+    if (deliveryCount < MAX_DELIVERIES) {
+        minDistanceTable[deliveryCount][0] = source;
+        minDistanceTable[deliveryCount][1] = destination;
+        minDistanceTable[deliveryCount][2] = *minDist;
+        //(*deliveryCount)++;
+    }
+
+    return *minDist;
+}
+
+
+
+
+
+
+
+
+
+
 
 
