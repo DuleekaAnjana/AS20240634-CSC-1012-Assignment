@@ -1,16 +1,136 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #define MAX_CITIES 30
 #define NAME_LEN 50
-
-
+#define MAX_VEHITYPES 3
+#define FUEL_PRICE 310.0
+#define MAX_DELIVERIES 50
 
  //Function Pototypes
       // City Management
-void addCity(char cities[MAX_CITIES][NAME_LEN], int *count);
+void addCity(char cities[MAX_CITIES][NAME_LEN], int* cityCount);
+void renameCity(char cities[MAX_CITIES][NAME_LEN], int cityCount);
+void removeCity(char cities[MAX_CITIES][NAME_LEN], int* cityCount);
+void displayCities(char cities[MAX_CITIES][NAME_LEN], int cityCount);
 
+      // Distance Management
+void inputDistance(int distance[MAX_CITIES][MAX_CITIES], char cities[][NAME_LEN], int cityCount);
+void displayDistances(int distance[MAX_CITIES][MAX_CITIES], char cities[][NAME_LEN], int cityCount);
+
+      // Delivery Requests
+int getVehicleType(char vehicleType[MAX_VEHITYPES][10], int capacity[], int *selectVehicleType, char selectVehicleTypeStr[10]);
+int getWeight(int *selectVehicleType, char vehicleType[MAX_VEHITYPES][10], int capacity[], char selectVehicleTypeStr[10], int *weight);
+int getLocations(int *source, int *destination, char cities[MAX_CITIES][NAME_LEN], int cityCount);
+void validateStatus(char deliveryStatus[MAX_DELIVERIES][10], float actualDeliveryTimes[MAX_DELIVERIES], int deliveryCount);
+void handleDeliveryRequest(
+    int cityCount,
+    char vehicleType[MAX_VEHITYPES][10],
+    int capacity[],
+    char cities[MAX_CITIES][NAME_LEN],
+    int *selectVehicleType,
+    char selectVehicleTypeStr[10],
+    int *source,
+    int *destination,
+    int *weight,
+    int *deliveryCount,
+    int sourceArr[MAX_DELIVERIES],
+    int destinationArr[MAX_DELIVERIES],
+    int weightArr[MAX_DELIVERIES],
+    int vehicleArr[MAX_DELIVERIES],
+    char deliveryStatus[MAX_DELIVERIES][10],
+    float actualDeliveryTimes[MAX_DELIVERIES]
+);
+
+  // Calculate Cost
+        // Least Distance
+int calculatePairDistance (int distance[MAX_CITIES][MAX_CITIES], int source, int city1, int city2, int destination);
+int calculateSingleDistance(int distance[MAX_CITIES][MAX_CITIES], int source, int city, int destination);
+int findLeastCostRoute(
+    int distance[MAX_CITIES][MAX_CITIES],
+    int cityList[],
+    int cityCount,
+    int* routeSize,
+    int source,
+    int destination,
+    int* minDist,
+    int bestPair[2],
+    int deliveryCount,
+    int minDistanceTable[MAX_DELIVERIES][3],
+    int* bestOrder
+);
+       // Calculate Cost
+void calculateDeliveryCost(
+    int distance[MAX_CITIES][MAX_CITIES],
+    char vehicleType[MAX_VEHITYPES][10],
+    int cityCount,
+    int selectVehicleType,
+    int source,
+    int destination,
+    int weight,
+    int capacity[],
+    int ratePerKm[],
+    int avgSpeed[],
+    int fuelEfficiency[],
+    int* deliveryCount,
+    int deliveryDistances[],
+    float deliveryTimes[],
+    float deliveryRevenues[],
+    float deliveryProfits[],
+    int cityList[MAX_CITIES],
+    int *routeSize,
+    int minDistanceTable[MAX_DELIVERIES][3],
+    int bestPair[2],
+    int *minDist,
+    int *bestOrder,
+    float* deliveryCost,
+    float* timeHrs,
+    int* fuelUsed,
+    float* fuelCost,
+    float* totalCost,
+    float* profit,
+    float* customerCharge
+);
+
+
+
+
+
+  // Reports
+        // Display Estimation
+void displayDeliveryEstimation(
+    char cities[MAX_CITIES][NAME_LEN],
+    int source,
+    int destination,
+    int selectVehicleType,
+    char vehicleType[MAX_VEHITYPES][10],
+    int weight,
+    int minDist,
+    float deliveryCost,
+    float fuelUsed,
+    float fuelCost,
+    float totalCost,
+    float profit,
+    float customerCharge,
+    float timeHrs
+);
+        // Display Least Cost Route after Estimation Report
+void displayLeastCostRoute(int source, int destination, int routeSize, int minDist, int bestPair[2], int bestOrder);  //// need to update
+        // Display Performance Report
+void displayDeliverySummary(int deliveryCount, int deliveryDistances[], float deliveryTimes[], float actualDeliveryTimes[], float deliveryRevenues[], float deliveryProfits[], int minDistanceTable[MAX_DELIVERIES][3], char cities[MAX_CITIES][NAME_LEN]);
+
+
+
+  // Remaining All Delivery Status
+void displayAllDeliveries (int sourceArr[], int destinationArr[], int weightArr[], int vehicleArr[], char vehicleType[][10], int deliveryCount, char deliveryStatus[MAX_DELIVERIES][10]);
+void displayAllStoredLeastDistances(int minDistanceTable[MAX_DELIVERIES][3], int deliveryCount, char cities[MAX_CITIES][NAME_LEN]);
+void remainAllDeliveryStatus(int sourceArr[], int destinationArr[], int weightArr[], int vehicleArr[], char vehicleType[][10],
+char deliveryStatus[MAX_DELIVERIES][10], int deliveryCount, int minDistanceTable[MAX_DELIVERIES][3], char cities[MAX_CITIES][NAME_LEN]);
+
+
+  //
 int main()
 {
     char cities[MAX_CITIES][NAME_LEN];
@@ -918,6 +1038,11 @@ void displayLeastCostRoute(int source, int destination, int routeSize, int minDi
     }
 }
 
+
+
+
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------
     // Performance Report
 void displayDeliverySummary(int deliveryCount, int deliveryDistances[], float deliveryTimes[], float actualDeliveryTimes[], float deliveryRevenues[], float deliveryProfits[], int minDistanceTable[MAX_DELIVERIES][3], char cities[MAX_CITIES][NAME_LEN]) {
 
