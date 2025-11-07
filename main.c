@@ -542,6 +542,85 @@ void validateStatus(char deliveryStatus[MAX_DELIVERIES][10], float actualDeliver
     printf("\n\tDelivery statuses updated successfully!\n");
 }
 
+void handleDeliveryRequest(
+    int cityCount,
+    char vehicleType[MAX_VEHITYPES][10],
+    int capacity[],
+    char cities[MAX_CITIES][NAME_LEN],
+    int* selectVehicleType,
+    char selectVehicleTypeStr[10],
+    int* source,
+    int* destination,
+    int* weight,
+    int* deliveryCount,
+    int sourceArr[MAX_DELIVERIES],
+    int destinationArr[MAX_DELIVERIES],
+    int weightArr[MAX_DELIVERIES],
+    int vehicleArr[MAX_DELIVERIES],
+    char deliveryStatus[MAX_DELIVERIES][10],     // store delivery status ("Completed"/"Ongoing")
+    float actualDeliveryTimes[MAX_DELIVERIES]      // store actual delivery times if completed ---> use for performance report
+    ){
+
+
+    if (cityCount < 2) {
+        printf("\tAt least two cities are required to place a delivery order.\n");
+        return;
+    }
+
+    if (*deliveryCount >= MAX_DELIVERIES) {
+        printf("\nCannot add more deliveries. Maximum reached (%d)\n", MAX_DELIVERIES);
+        return;
+    }
+    // used  ----->
+    //int source, destination, selectVehicleType, weight;
+    //char selectVehicleTypeStr[10];
+
+    printf("\n\t\t--- Delivery Request ---\n");
+
+    int selctVehiTyp = getVehicleType(vehicleType, capacity, selectVehicleType, selectVehicleTypeStr);
+    if (selctVehiTyp == -1){
+        printf("\tReturned to main menu--->\n");
+        return; // user cancelled
+    }
+    *selectVehicleType = selctVehiTyp;
+    // (*selectVehicleType)--
+
+
+    int entrWeight = getWeight(selectVehicleType, vehicleType, capacity, selectVehicleTypeStr, weight);
+    if (entrWeight == -1){
+        printf("\tReturned to main menu--->\n");
+        return; // user cancelled
+    }
+    *weight = entrWeight;
+
+    if (!getLocations(source, destination, cities, cityCount)){
+        printf("\tReturned to main menu--->\n");
+        return; // user returned to main menu
+    }
+
+            // store delivery data in arrays
+    sourceArr[*deliveryCount] = *source;
+    destinationArr[*deliveryCount] = *destination;
+    weightArr[*deliveryCount] = *weight;
+    vehicleArr[*deliveryCount] = *selectVehicleType - 1;
+
+    (*deliveryCount)++;
+
+    printf("\n\t\t===Delivery request accepted!===\n");
+    printf("\tDelivery added successfully! Total deliveries: %d\n", *deliveryCount);
+    printf("\t\t->From City #%d %s => City #%d %s\n", *source + 1, cities[*source],  *destination + 1, cities[*destination]);
+    printf("\t\t->Weight: %d kg\n", *weight);
+    printf("\t\t->Vehicle Type: %s\n", selectVehicleTypeStr);
+
+    char choice;
+    printf("\tDo you want to Update Delivery Status? (y/n): ");
+    scanf(" %c", &choice);
+    if (choice == 'y' || choice == 'Y')
+         ////////// call for Validate Delivery Status
+        validateStatus(deliveryStatus, actualDeliveryTimes, *deliveryCount);
+}
+
+
 
 
 
