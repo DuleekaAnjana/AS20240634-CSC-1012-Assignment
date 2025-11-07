@@ -333,3 +333,40 @@ void inputDistance(int distance[MAX_CITIES][MAX_CITIES], char cities[][NAME_LEN]
 
     }while (choice == 'y' || choice == 'Y');
 }
+
+
+void displayDistances(int distance[MAX_CITIES][MAX_CITIES], char cities[][NAME_LEN], int cityCount) {
+    if (cityCount == 0) {
+        printf("\tNo cities to display.\n");
+        return;
+    }
+
+    /*
+    printf("\n\t\t|==> Display Cities\n");
+    printf("\t\t");
+    displayCities(cities, cityCount);
+    */
+
+    printf("\n");
+
+    printf("\n\t%-15s", "City");
+    for (int i = 0; i < cityCount; i++)
+        printf("%-15s", cities[i]);
+
+    printf("\n");
+
+    for (int i = 0; i < cityCount; i++) {
+        printf("\t%-15s", cities[i]);
+        for (int j = 0; j < cityCount; j++) {
+            if (i == j)
+                printf("%-15d", 0);
+            else
+                printf("%-15d", distance[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+
+
+
