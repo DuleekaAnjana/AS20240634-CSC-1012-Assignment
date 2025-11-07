@@ -83,7 +83,22 @@ int main()
                 //
 
             case 4:
-                //code
+                printf("\n\t|``  \t=== DELIVERY COST ESTIMATION ===\t  ``|\n");
+                char reportChoice;
+                printf("\tDo you want to see DELIVERY COST ESTIMATION REPORT (y/n): ");
+                scanf(" %c", &reportChoice);
+
+                if (reportChoice == 'y' || reportChoice == 'Y'){
+                    displayDeliveryEstimation(cities, source, destination, selectVehicleType, vehicleType,
+                            weight, minDist, deliveryCost, fuelUsed, fuelCost,
+                                totalCost, profit, customerCharge, timeHrs);
+                    displayLeastCostRoute(source, destination, routeSize, minDist, bestPair, bestOrder);
+                }else{
+                    printf("\tReturned to main menu--->");
+                    choice = 8;
+                    continue;
+                }
+                break;
                 break;
 
             case 5:
