@@ -210,4 +210,126 @@ void displayCities(char cities[MAX_CITIES][NAME_LEN], int cityCount) {
 
 
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+  // Distance Management
+      // Enter or Edit Distances
+void inputDistance(int distance[MAX_CITIES][MAX_CITIES], char cities[][NAME_LEN], int cityCount) {
+    int i, j, d;
+    char choice;
 
+    do{
+        printf("\t  |==> Enter or Edit Distances Between Cities ---\n");
+
+        printf("\n\t\t|==> Display Cities\n");
+        printf("\t\t");
+        displayCities(cities, cityCount);
+
+        displayDistances(distance, cities, cityCount);
+
+        if (cityCount < 2) {
+            printf("\tAt least two cities required to enter distances.\n");
+            printf("\tChoose Choice No 1 from main menu and Enter at least 2 cities.\n");
+            return;
+        }
+
+        printf("\n\tEnter city numbers to update distance (e.g. 1 or 2)\\/\n");
+
+        printf("\tEnter 1'st City NO=> From : ");
+        scanf("%d", &i);
+
+        printf("\tEnter 2'nd City NO=> To   : ");
+        scanf("%d", &j);
+
+        /*
+        if (i == 0 && j == 0)
+            break;
+        */
+
+        if (i < 1 || i > cityCount || j < 1 || j > cityCount) {
+            printf("\tInvalid city numbers!\n");
+            printf("\tPlease reenter valied 2 different cities\n");
+
+            printf("\tDo you want to continoue? (y-for enter distance/n-for return to main menu): ");
+            scanf(" %c", &choice);
+
+            if (choice == 'y' || choice == 'Y')
+                continue;
+            else{
+                printf("\tReturned to main menu--->");
+                return;
+            }
+        }
+
+        if (i == j) {
+            printf("\tDistance from a city to itself must be 0.! Please reenter valied another 2 different cities\n");
+
+            printf("\tDo you want to continoue? (y-for enter distance/n-for return to main menu): ");
+            scanf(" %c", &choice);
+
+            if (choice == 'y' || choice == 'Y')
+                continue;
+            else{
+                printf("\tReturned to main menu--->");
+                return;
+            }
+        }
+//
+        if (distance[i - 1][j - 1] != 0) {
+            printf("\tDistance between %s and %s is already entered (%d km).\n", cities[i - 1], cities[j - 1], distance[i - 1][j - 1]);
+            //printf("\tPlease re-enter another 2 different cities for distance.\n");
+
+            printf("\tDo you want to edit them? (y-for enter distance/n-for return to main menu): ");
+            scanf(" %c", &choice);
+
+            if (choice == 'y' || choice == 'Y'){
+                printf("\tEnter new distance between %s and %s: ", cities[i - 1], cities[j - 1]);
+                scanf("%d", &d);
+
+                distance[i - 1][j - 1] = d;
+                distance[j - 1][i - 1] = d;
+
+                printf("\n\tUpdated: %s <=> %s = %d km\n", cities[i - 1], cities[j - 1], d);
+
+                printf("\n\tUpdated distance table:-->\n");
+                displayDistances(distance, cities, cityCount);
+
+                printf("\tDo you want to Enter or Edit Distances Between another Cities? (y/n): ");
+                scanf(" %c", &choice);
+
+                if (choice == 'y' || choice == 'Y')
+                    continue;
+                else{
+                    printf("\tReturned to main menu--->");
+                    return;
+                }
+            }else{
+                printf("\tDo you want to Enter or Edit Distances Between another Cities? (y/n): ");
+                scanf(" %c", &choice);
+
+                if (choice == 'y' || choice == 'Y')
+                    continue;
+                else{
+                    printf("\tReturned to main menu--->");
+                    return;
+                }
+            }
+        }
+
+        printf("\tEnter distance between %s and %s: ", cities[i - 1], cities[j - 1]);
+        scanf("%d", &d);
+
+        distance[i - 1][j - 1] = d;
+        distance[j - 1][i - 1] = d;
+
+        printf("\n\tUpdated: %s <=> %s = %d km\n", cities[i - 1], cities[j - 1], d);
+
+        printf("\n\tUpdated distance table:-->\n");
+        displayDistances(distance, cities, cityCount);
+
+        printf("\tDo you want to Enter or Edit Distances Between another Cities? (y/n): ");
+        scanf(" %c", &choice);
+
+        printf("\n\n");
+
+    }while (choice == 'y' || choice == 'Y');
+}
