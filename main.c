@@ -199,3 +199,15 @@ void removeCity(char cities[MAX_CITIES][NAME_LEN], int *cityCount) {
     }while (choice == 'y' || choice == 'Y');
 }
 
+
+      // Display Cities
+void displayCities(char cities[MAX_CITIES][NAME_LEN], int cityCount) {
+    printf("\tRemaining Cities:\n");
+    for (int i = 0; i < cityCount; i++) {
+        printf("\t\t%d. %s\n", i + 1, cities[i]);
+    }
+}
+
+
+
+
