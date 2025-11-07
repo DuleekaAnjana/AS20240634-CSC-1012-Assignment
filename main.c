@@ -169,3 +169,33 @@ void renameCity(char cities[MAX_CITIES][NAME_LEN], int cityCount) {
 
     }while (choice == 'y' || choice == 'Y');
 }
+
+      // Remove City
+void removeCity(char cities[MAX_CITIES][NAME_LEN], int *cityCount) {
+    char choice;
+
+    do{
+        printf("\t\t|==> Remove City\n");
+        displayCities(cities, *cityCount);
+
+        int index;
+        printf("\tEnter city number to remove (1-%d): ", *cityCount);
+        scanf("%d", &index);
+
+        if (index > 0 && index <= *cityCount) {
+            for (int i = index - 1; i < *cityCount - 1; i++) {
+            strcpy(cities[i], cities[i + 1]);
+            }
+
+            (*cityCount)--;
+            printf("\tCity removed successfully.\n");
+        }else{
+            printf("\tInvalid city number! Please enter remainig city number\n");
+        }
+
+        printf("\tDo you want to remove another city? (y/n): ");
+        scanf(" %c", &choice);
+
+    }while (choice == 'y' || choice == 'Y');
+}
+
