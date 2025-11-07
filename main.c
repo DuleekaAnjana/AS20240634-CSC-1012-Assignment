@@ -112,26 +112,27 @@ int main()
     return 0;
 }
 
+//---------------------------------------------------------------------------------------------------------------------------------------------
   // City Management
       // Add Cities
-void addCity(char cities[MAX_CITIES][NAME_LEN], int *count) {
+void addCity(char cities[MAX_CITIES][NAME_LEN], int *cityCount) {
     char newCity[NAME_LEN];
-    int choice;
+    char choice;
 
     do{
         printf("\t\t|==> Add new City\n");
         printf("\tEnter city name: ");
         scanf(" %s", newCity);
 
-        for (int i = 0; i < *count; i++) {
+        for (int i = 0; i < *cityCount; i++) {
         if (strcmp(cities[i], newCity) == 0) {
             printf("\tCity already exists! Please enter a different name.\n");
             return;
             }
         }
 
-        strcpy(cities[*count], newCity);
-        (*count)++;
+        strcpy(cities[*cityCount], newCity);
+        (*cityCount)++;
 
         printf("\tCity added successfully.\n");
 
@@ -141,3 +142,30 @@ void addCity(char cities[MAX_CITIES][NAME_LEN], int *count) {
     }while (choice == 'y' || choice == 'Y');
 }
 
+
+      // Rename City
+void renameCity(char cities[MAX_CITIES][NAME_LEN], int cityCount) {
+    char choice;
+
+    do{
+        printf("\t\t|==> Rename City\n");
+        displayCities(cities, cityCount);
+
+        int index;
+        printf("\tEnter city number to rename (1-%d): ", cityCount);
+        scanf("%d", &index);
+
+        if (index > 0 && index <= cityCount) {
+            printf("\tEnter new name: ");
+            scanf("%s", cities[index - 1]);
+
+            printf("\tCity renamed successfully.\n");
+        }else{
+            printf("\tInvalid city number! Please enter remainig city number\n");
+        }
+
+        printf("\tDo you want to rename another city? (y/n): ");
+        scanf(" %c", &choice);
+
+    }while (choice == 'y' || choice == 'Y');
+}
