@@ -307,6 +307,14 @@ int main()
 
             case 4:
                 printf("\n\t|``  \t=== DELIVERY COST ESTIMATION ===\t  ``|\n");
+
+                if (deliveryCount <= 0) {
+                    printf("\n\t\t|==> No delivaries to estimate cost!\n");
+                    printf("\n\t\t|==> Returned to main menu---> \n");
+                    printf("\n\t\t|==> Choose number 3 from main menu and enter at least 1 delivary request---> \n");
+                    continue;
+                }
+
                 char reportChoice;
                 printf("\tDo you want to see DELIVERY COST ESTIMATION REPORT (y/n): ");
                 scanf(" %c", &reportChoice);
@@ -318,7 +326,7 @@ int main()
                     displayLeastCostRoute(source, destination, routeSize, minDist, bestPair, bestOrder);
                 }else{
                     printf("\tReturned to main menu--->");
-                    choice = 8;
+                    //choice = 8;
                     continue;
                 }
                 break;
@@ -1213,7 +1221,6 @@ void displayDeliverySummary(int deliveryCount, int deliveryDistances[], float de
 
     printf("\t\t=================================================\n");
 }
-
 
   // Display Renaining All Delivery Status
       // Function to display all deliveries

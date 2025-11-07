@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1762504492 source:c:\users\dell\desktop\as20240634 csc 1012 assignment\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+
