@@ -846,6 +846,46 @@ void calculateDeliveryCost(
 
 
 
+ //-----------------------------------------------------------------------------------------------------------------------------------------------------
+    // Reports
+void displayDeliveryEstimation(
+    char cities[MAX_CITIES][NAME_LEN],
+    int source,
+    int destination,
+    int selectVehicleType,
+    char vehicleType[MAX_VEHITYPES][10],
+    int weight,
+    int minDist,
+    float deliveryCost,
+    float fuelUsed,
+    float fuelCost,
+    float totalCost,
+    float profit,
+    float customerCharge,
+    float timeHrs
+    ) {
+        /////////////////////////////////////////////////////////////////////// wants to add checkings citycount > 2 and delivery count < 0
+    printf("\n\t======================================================\n");
+    printf("\t\tDELIVERY COST ESTIMATION\n");
+    printf("\t------------------------------------------------------\n");
+    printf("\tFrom: %s\n", cities[source]);
+    printf("\tTo: %s\n", cities[destination]);
+    printf("\tMinimum Distance: %d km\n", minDist);
+    printf("\tVehicle: %s\n", vehicleType[selectVehicleType - 1]);
+    printf("\tWeight: %d kg\n", weight);
+    printf("\t------------------------------------------------------\n");
+    printf("\tBase Cost: %.2f LKR\n", deliveryCost);
+    printf("\tFuel Used: %.2f L\n", fuelUsed);
+    printf("\tFuel Cost: %.2f LKR\n", fuelCost);
+    printf("\tOperational Cost: %.2f LKR\n", totalCost);
+    printf("\tProfit: %.2f LKR\n", profit);
+    printf("\tCustomer Charge: %.2f LKR\n", customerCharge);
+    printf("\tEstimated Time: %.2f hours\n", timeHrs);
+    printf("\t======================================================\n");
+}
+
+
+
 
 
 
