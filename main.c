@@ -370,3 +370,42 @@ void displayDistances(int distance[MAX_CITIES][MAX_CITIES], char cities[][NAME_L
 
 
 
+
+//----------------------------------------------------------------------------------------------------------------------------------------
+  // Delivery Request Management
+    // To add new request
+int getVehicleType(char vehicleType[MAX_VEHITYPES][10], int capacity[], int* selectVehicleType, char selectVehicleTypeStr[10]) {
+    char retryVehicle = 'y';
+
+    do {
+        printf("\n\tAvailable vehicle types & Max Capacities:\n");
+        for (int i = 0; i < MAX_VEHITYPES; i++) {
+            printf("\t  %d. %-10s : %-5d\n", i + 1, vehicleType[i], capacity[i]);
+        }
+
+        printf("\n\tEnter vehicle type (1=Van, 2=Truck, 3=Lorry): ");
+        scanf("%d", selectVehicleType);
+
+        if (*selectVehicleType < 1 || *selectVehicleType > MAX_VEHITYPES) {
+            printf("\tInvalid vehicle type number!\n");
+            printf("\tDo you want to try again? (y/n): ");
+            scanf(" %c", &retryVehicle);
+            /*if (retryVehicle == 'n' || retryVehicle == 'N') {
+                printf("\tReturned to main menu--->\n");
+                return -1; // cancelled
+            }*/
+        } else {
+            // Valid vehicle — copy its name and return
+            strcpy(selectVehicleTypeStr, vehicleType[*selectVehicleType - 1]);
+            return *selectVehicleType;
+        }
+
+    } while (retryVehicle == 'y' || retryVehicle == 'Y');
+
+    //printf("\n\tReturned to main menu--->\n");
+    return -1;
+}
+
+
+
+
