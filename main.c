@@ -511,6 +511,38 @@ int getLocations(int *source, int *destination, char cities[MAX_CITIES][NAME_LEN
     return 1; // success
 }
 
+void validateStatus(char deliveryStatus[MAX_DELIVERIES][10], float actualDeliveryTimes[MAX_DELIVERIES], int deliveryCount) {
+    if (deliveryCount == 0) {
+        printf("\n\tNo deliveries to update!\n");
+        return;
+    }
+
+    printf("\n\t\t=== Validate Delivery Status ===\n");
+
+        // Ask for status
+    printf("\tEnter status (1=Ongoing, 2=Completed): ");
+    int statusChoice;
+    scanf("%d", &statusChoice);
+
+    int i = 0;
+    if (statusChoice == 1) {
+        strcpy(deliveryStatus[i], "Ongoing");
+            //deliveryTimes[i] = 0;  // No time yet
+    }else if (statusChoice == 2) {
+        strcpy(deliveryStatus[i], "Completed");
+        printf("\tEnter actual delivery time (in hours): ");
+        scanf(" %f", &actualDeliveryTimes[i]);
+
+    }else {
+        printf("\tInvalid choice! Marked as Ongoing by default.\n");
+        strcpy(deliveryStatus[i], "Ongoing");
+            //deliveryTimes[i] = 0;
+    }
+
+    printf("\n\tDelivery statuses updated successfully!\n");
+}
+
+
 
 
 
